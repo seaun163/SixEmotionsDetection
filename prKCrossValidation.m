@@ -1,0 +1,31 @@
+function [averPf,averPd] = prKCrossValidation(data,numFolds,name)
+key0 = rem(1:length(data(data(:,3)==0)),numFolds)+1;
+key0 = key0(randperm(length(key0)));
+key1 = rem(1:length(data(data(:,3)==1)),numFolds)+1;
+key1 = key1(randperm(length(key1)));
+
+key=[key0';key1'];
+data=[data key];
+
+num=102;
+pd=zeros(num,1);
+pf=zeros(num,1);
+attribute={num};
+
+for fold = 1:numFolds
+    trainData=data(data(:,4)~=fold,1:3);
+    classifer=prTrainClassifer(trainData,name);
+    
+    testData=data(data(:,4)==fold,1:2);
+    target=data(data(:,4)==fold,3);
+    ds=prRunClassifer(classifer,testData);
+    
+    [p_f,p_d]=prGenerateRoc(ds,target,attribute);
+    pf=pf+p_f;
+    pd=pd+p_d;
+end
+
+averPf=pf/numFolds;
+averPd=pd/numFolds;
+end
+
