@@ -39,7 +39,7 @@ if(strcmpi(classifer.name,'FLD'))
 end
 
 if(strcmpi(classifer.name,'SVM'))
-    classifer=svmtrain(data(:,1:end-1),data(:,end),classifer.Name,classifer.Value,'autoscale',false,'showplot',true);
+    classifer=svmtrain(data(:,1:end-1),data(:,end),classifer.Name,classifer.Value,'autoscale',false);
     classifer.name='SVM';
 end
 
