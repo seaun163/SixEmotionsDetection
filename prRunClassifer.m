@@ -1,15 +1,14 @@
 function [ ds ] = prRunClassifer(classifer,test)
-name=classifer{1};
 len=size(test,1);
 ds=nan(len,1);
 
-if(strcmpi(name,'Bayes'))
-    miu0=classifer{2};
-    miu1=classifer{3};
-    c0=classifer{4};
-    c1=classifer{5};
-    p0=classifer{6};
-    p1=classifer{7};
+if(strcmpi(classifer.name,'Bayes'))
+    miu0=classifer.miu0;
+    miu1=classifer.miu1;
+    c0=classifer.c0;
+    c1=classifer.c1;
+    p0=classifer.p0;
+    p1=classifer.p1;
 
     for i=1:1:len
         x=test(i,:)';
@@ -19,12 +18,12 @@ if(strcmpi(name,'Bayes'))
     end
 end
 
-if(strcmpi(name,'DLRT'))
-    n0=classifer{2};
-    n1=classifer{3};
-    D=classifer{4};
-    K=classifer{5};
-    data=classifer{6};
+if(strcmpi(classifer.name,'DLRT'))
+    n0=classifer.n0;
+    n1=classifer.n1;
+    D=classifer.D;
+    K=classifer.K;
+    data=classifer.data;
     
     data0=data(data(:,end)==0,1:end-1);
     data1=data(data(:,end)==1,1:end-1);
@@ -36,11 +35,16 @@ if(strcmpi(name,'DLRT'))
     end  
 end
 
-if(strcmpi(name,'FLD'))
-    w=classifer{2};
+if(strcmpi(classifer.name,'FLD'))
+    w=classifer.w;
     for i=1:1:len  
         ds(i)=w'*test(i,:)';
     end  
+end
+
+if(strcmpi(classifer.name,'SVM'))
+%     ds= svmclassify(classifer,test,'Showplot',true);
+      [x, ds]=svmdecision(test,classifer);
 end
 
 end

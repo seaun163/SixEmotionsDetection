@@ -6,8 +6,9 @@ feature=squeeze([feature(:,1,:);feature(:,2,:)])';
 target=target<10;
 data=[feature target];
 
-attribute={'DLRT',5};
-[pf,pd]=prKCrossValidation(data,10,attribute);
+classifer.name='DLRT';
+classifer.K=5;
+[pf,pd]=prKCrossValidation(data,10,classifer);
 figure,plot(pf,pd);
 xlabel('pf');ylabel('pd');
 title('DLRT Classifer');
