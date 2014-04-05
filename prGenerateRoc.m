@@ -20,7 +20,7 @@ numBeta = length(beta);
 Pf = [0,pfa,1]';
 Pd = nan(numBeta,1);
 
-for thisBeta = 1:numBeta
+for thisBeta = 1:1:numBeta
     Pd(thisBeta)=length(find(ds1>=beta(thisBeta)))/length(ds1);
 end
 
