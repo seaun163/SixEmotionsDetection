@@ -15,14 +15,19 @@ if(strcmpi('sequential',option))
             chosedFeature=[dim(j) chosedFeature];
             data(:,chosedFeature);
             [averPf,averPd]=prKCrossValidation(data(:,chosedFeature),10,classifer);
+         
             ret= prAUC(averPf,averPd);
+            
+            if(ret<=0)
+                x=1;
+            end
             if(auc<ret)
                 auc=ret;
                 index=j;
             end
             chosedFeature(1)=[];
         end
-
+        
         chosedFeature=sort([dim(index) chosedFeature]);
         result(i)=auc;
         dim(index)=[];
@@ -32,8 +37,8 @@ if(strcmpi('sequential',option))
         end
     end
     figure,plot(result);
-    title('Auc with different Dims');
-    ylabel('Auc');xlabel('Dim');
+    title('Auc with different Dimention');
+    ylabel('Auc');xlabel('Dimention');
 end
 featureDecision=featureDecision(:,1:end-1);
 

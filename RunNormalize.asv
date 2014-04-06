@@ -7,7 +7,8 @@ warning;
 
 norm_location=squeeze([norm_location(:,1,:);norm_location(:,2,:)])'  ;
 norm_location(:,[13 62])=[];
-feature=[norm_location distance testanglelist];
+% feature=[norm_location distance testanglelist];
+feature=[norm_location];
 
 target=target<10;
 data=[feature target];
@@ -22,3 +23,8 @@ classifer=prTrainClassifer([trainData(:,selectFeature) trainData(:,end)],classif
 ds=prRunClassifer(classifer,testData(:,selectFeature));
 ret=[ds testData(:,end)];
 
+attribute={103};
+[pf,pd]=prGenerateRoc(ds,testData(:,end),attribute);
+
+figure,plot(pf,pd);
+title('ROC after position feature selction');xlabel('pf');ylabel('pd');
