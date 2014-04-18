@@ -1,4 +1,3 @@
-%
 % Signature: 
 %   xx_initialize
 %
@@ -6,14 +5,13 @@
 %   OpenCV2.4 above, mexopencv
 %   mexopencv can be downloaded here:
 %   http://www.cs.stonybrook.edu/~kyamagu/mexopencv/
-%   
-%   After installing mexopencv, remember to add it to the path.
-%   
-%   The program assumes that detection and tracking models are in the
-%   current working directory.
+%
+%   You do not need the above two packages unless you want to build OpenCV
+%   on yourself or re-compile mexopencv. All DLLs and mex functions are
+%   included in this package.
 %
 % Usage:
-%   This function initializes the tracker.
+%   This function loads models and set default parameters of the tracker.
 %
 % Params:
 %   None
@@ -22,46 +20,48 @@
 %   DM - detection model
 %   TM - tracking model
 %   option - tracker parameters
+%     .face_score - threshold ([0,1]) determining whether the tracked face is
+%     lost. The lower the value the more tolerated it becomes.
+%
+%     .min_neighbors - OpenCV face detector parameter (>0). The lower the more 
+%     likely to find a face as well as false positives.
+%
+%     .min_face_size - minimum face size for OpenCV face detector.
+%
+%     .compute_pose - flag indicating whether to compute head pose.
 %
 % Author: 
 %   Xuehan Xiong, xiong828@gmail.com
 % 
-% Date:
-%   5/30/2013
+% Creation date:
+%   3/25/2013
 %
 
-function [DM, TM, option] = xx_initialize(xxPath)
-  if ~exist('xxPath','var')
-    xxPath = '';
-  end
-
-  % re-initialization parameter
-  option.face_score = -1.5;
-  % face detector threshold, positive integers
-  option.min_neighbors = 1;
-  % minimum face size to detect
+function [DM, TM, option] = xx_initialize
+  option.face_score = 0.3;
+  
+  option.min_neighbors = 2;
+  
   option.min_face_size = [50 50];
-  % flag to compute head pose
+  
   option.compute_pose = true;
-  % flag to return HOG features
-  option.return_feature = true;
-  % flag to return HOG feature types
-  option.return_feature_type = {'appearance','shape','norm_image','norm_pred'}; 
   
   % OpenCV face detector model file
-  xml_file = fullfile(xxPath,'haarcascade_frontalface_alt2.xml');
+  xml_file = './models/haarcascade_frontalface_alt2.xml';
   
   % load tracking model
-  load(fullfile(xxPath,'TrackingModel-xxsift-v1.8.mat'));
+  load('./models/TrackingModel-xxsift-v1.10.mat');
   
   % load detection model
-  load(fullfile(xxPath,'DetectionModel-xxsift-v1.4.mat'));
+  load('./models/DetectionModel-xxsift-v1.5.mat');
   
   % create face detector handle
   fd_h = cv.CascadeClassifier(xml_file);
   
-  % pass it to detection and tracking model
   DM{1}.fd_h = fd_h;
- 
+  
 end
+
+
+
 
