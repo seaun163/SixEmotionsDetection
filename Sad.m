@@ -4,6 +4,7 @@ load('data/norm_location_train.mat');
 load('data/norm_angle_train.mat');
 load('data/norm_angle_test.mat');
 load('data/norm_location_test.mat');
+load('data/facedetect_test_extend.mat');
 warning('off','all');
 warning;
 %jige data raw process
@@ -11,7 +12,7 @@ featureTrain=prDataTransfer(norm_location_train, distance_train, anglelist_train
 featureTest=prDataTransfer(norm_location_test, distance_test, anglelist_test)-0.5;
 testData=featureTest;
 %target defined for train data
-target=(target<39&target>29);
+target=(target<50&target>39);
 data=[featureTrain target];
 
 %trainData set
@@ -24,7 +25,8 @@ classifer.name='FLD';
 %train classifier with selected feature set
 classifer=prTrainClassifer([trainData(:,selectFeature) trainData(:,end)],classifer);
 ds=prRunClassifer(classifer,testData(:,selectFeature));
-testTarget=[1 0 0 1 0 0 0 0 0 0 0 1 0 0 0 1 1 0 1 0 0]';
+
+testTarget=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 ]';
 
 dsSelf=prRunClassifer(classifer,trainData(:,selectFeature));
 SelfTarget=trainData(:,end);
