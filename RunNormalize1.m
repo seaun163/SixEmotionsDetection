@@ -1,4 +1,3 @@
-
 close all;clc;clear all;
 load('data/TargetData');
 load('data/norm_location_train.mat');
@@ -8,8 +7,8 @@ load('data/norm_location_test.mat');
 warning('off','all');
 warning;
 %jige data raw process
-featureTrain=prDataTransfer(norm_location_train, distance_train, anglelist_train);
-featureTest=prDataTransfer(norm_location_test, distance_test, anglelist_test);
+featureTrain=prDataTransfer(norm_location_train, distance_train, anglelist_train)-0.5;
+featureTest=prDataTransfer(norm_location_test, distance_test, anglelist_test)-0.5;
 testData=featureTest;
 %target defined for train data
 target=(target<39&target>29);
@@ -25,16 +24,26 @@ classifer.name='FLD';
 %train classifier with selected feature set
 classifer=prTrainClassifer([trainData(:,selectFeature) trainData(:,end)],classifer);
 ds=prRunClassifer(classifer,testData(:,selectFeature));
-% 
-% ds=prRunClassifer(classifer,data(1:50,1:end-1));
-% target=data(1:50,end);
-% [pf,pd]=prGenerateRoc(ds,testTarget,attribute);
-% figure,plot(pf,pd);
+testTarget=[1 0 0 1 0 0 0 0 0 0 0 1 0 0 0 1 1 0 1 0 0]';
 
-testTarget=[1 0 0 1 0 0 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0];
+dsSelf=prRunClassifer(classifer,trainData(:,selectFeature));
+SelfTarget=trainData(:,end);
+
+% SVM shreshold selection
+dataSVM=[dsSelf SelfTarget];
+sortrows(dataSVM)
+testSVM=ds;
+classifer.name='SVM';
+classifer.Name='kernel_function';
+classifer.Value='mlp';
+classifer=prTrainClassifer(dataSVM,classifer);
+dsSVM=prRunClassifer(classifer,testSVM);
+
+% draw ROC
 attribute={103};
 [pf,pd]=prGenerateRoc(ds,testTarget,attribute);
-
-figure,plot(pf,pd);
+figure,plot(pf,pd,'linewidth',8);
+title('Roc curve on Star Face Emotion Detection');
+xlabel('pf');ylabel('pd');
 
 

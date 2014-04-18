@@ -44,7 +44,7 @@ end
 
 if(strcmpi(classifer.name,'SVM'))
 %     ds= svmclassify(classifer,test,'Showplot',true);
-      [x, ds]=svmdecision(test,classifer);
+      [ds,x]=svmdecision(test,classifer);
 end
 
 end
