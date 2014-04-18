@@ -37,9 +37,7 @@ end
 
 if(strcmpi(classifer.name,'FLD'))
     w=classifer.w;
-    for i=1:1:len  
-        ds(i)=w'*test(i,:)';
-    end  
+    ds=w'*test';
 end
 
 if(strcmpi(classifer.name,'SVM'))
