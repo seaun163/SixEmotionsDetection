@@ -10,7 +10,6 @@ warning;
 
 featureTrain=prDataTransfer(norm_location_train, distance_train, anglelist_train)-0.5;
 test=prDataTransfer(norm_location_test, distance_test, anglelist_test)-0.5;
-
 dataAN=[featureTrain TargetRefine('AN',target)];
 dataDI=[featureTrain TargetRefine('DI',target)];
 dataFE=[featureTrain TargetRefine('FE',target)];
@@ -54,7 +53,7 @@ threSA=min(dsSA(dataSA(:,end)==1));
 threSU=min(dsSU(dataSU(:,end)==1));
 
 
-result=nan(size(test,1),1);
+result=nan(size(test,1));
 
 for i=1:size(test,1)
 	dsAN1=prRunClassifer(classiferAN,test(i,featureAN));
@@ -67,15 +66,15 @@ for i=1:size(test,1)
 
 	if(dsAN1>=threAN)
 	    result(i)=1;
-    elseif(dsDI1>=threDI)
- 		result(i)=2;
-    elseif(dsFE1>=threFE)
+	elseif(dsDI1>=threDI)
+		result(i)=2;
+	elseif(dsFE1>=threFE)
 		result(i)=3;
-    elseif(dsHA1>=threHA)
+	elseif(dsHA1>=threHA)
 		result(i)=4;
 	elseif(dsNE1>=threNE)
 		result(i)=5;
-     elseif(dsSA1>=threSA)
+	elseif(dsSA1>=threSA)
 		result(i)=6;
 	elseif(dsSU1>=threSU)
 		result(i)=7;
