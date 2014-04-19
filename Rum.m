@@ -67,18 +67,18 @@ for i=1:size(test,1)
 
 	if(dsAN1>=threAN)
 	    result(i)=1;
-    elseif(dsDI1>=threDI)
- 		result(i)=2;
-    elseif(dsFE1>=threFE)
-		result(i)=3;
-    elseif(dsHA1>=threHA)
-		result(i)=4;
-	elseif(dsNE1>=threNE)
-		result(i)=5;
-     elseif(dsSA1>=threSA)
-		result(i)=6;
-	elseif(dsSU1>=threSU)
-		result(i)=7;
+%     if(dsDI1>=threDI)
+%  		result(i)=2;
+%     if(dsFE1>=threFE)
+% 		result(i)=3;
+%     elseif(dsHA1>=threHA)
+% 		result(i)=4;
+% 	if(dsNE1>=threNE)
+% 		result(i)=5;
+%      if(dsSA1>=threSA)
+% 		result(i)=6;
+% 	if(dsSU1>=threSU)
+% 		result(i)=7;
 	else
 		result(i)=0;	
 	end

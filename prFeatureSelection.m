@@ -31,7 +31,7 @@ if(strcmpi('sequential',option))
         chosedFeature=sort([dim(index) chosedFeature]);
         result(i)=auc;
         dim(index)=[];
-        if(maxAuc<auc)
+        if(maxAuc<=auc)
             maxAuc=auc;
             featureDecision=chosedFeature;
         end
