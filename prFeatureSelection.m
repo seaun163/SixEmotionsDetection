@@ -18,16 +18,15 @@ if(strcmpi('sequential',option))
          
             ret= prAUC(averPf,averPd);
             
-            if(ret<=0)
-                x=1;
-            end
-            if(auc<ret)
+            if(auc<=ret)
                 auc=ret;
                 index=j;
             end
             chosedFeature(1)=[];
         end
-        
+        if(index==0)
+            x=0;
+        end
         chosedFeature=sort([dim(index) chosedFeature]);
         result(i)=auc;
         dim(index)=[];

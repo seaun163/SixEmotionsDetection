@@ -26,8 +26,39 @@ classifer=prTrainClassifer([trainData(:,selectFeature) trainData(:,end)],classif
 ds=prRunClassifer(classifer,testData(:,selectFeature));
 testTarget=[1 0 0 1 0 0 0 0 0 0 0 1 0 0 0 1 1 0 1 0 0]';
 
+plotdata1=ds(testTarget==1);
+plotdata2=ds(testTarget==0);
+
+figure,plot(plotdata1,'ro');
+hold on;
+plot(plotdata2,'b*');
+
 dsSelf=prRunClassifer(classifer,trainData(:,selectFeature));
 SelfTarget=trainData(:,end);
+
+H1Ds=dsSelf(SelfTarget==1);
+H0Ds=dsSelf(SelfTarget==0);
+
+H1Mean=mean(H1Ds);
+H0Mean=mean(H0Ds);
+
+H1Std=std(H1Ds);
+H0Std=std(H0Ds);
+
+pH1=normcdf(ds,H1Mean,H1Std);
+pH0=1-normcdf(ds,H0Mean,H0Std);
+
+[pH1' pH0' ds'/1000 testTarget]
+
+plotdata1=dsSelf(SelfTarget==1);
+plotdata2=dsSelf(SelfTarget==0);
+
+figure,plot(plotdata1,'ro');
+hold on;
+plot(plotdata2,'b*');
+plot(ds(testTarget==1),'ko');
+plot(ds(testTarget==0),'co');
+
 
 % SVM shreshold selection
 dataSVM=[dsSelf SelfTarget];
