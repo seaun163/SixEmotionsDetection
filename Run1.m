@@ -3,7 +3,7 @@ close all;clear all;clc;
 load('data/TargetData');
 load('data/norm_location_train.mat');
 load('data/norm_angle_train.mat');
-% load('data/FLDFeature.mat');
+load('data/DLRTFeature.mat');
 load('data/norm_location_test2.mat');
 warning('off','all');
 warning;
@@ -19,15 +19,15 @@ dataSA=[featureTrain TargetRefine('SA',target)];
 dataSU=[featureTrain TargetRefine('SU',target)];
 dataNE=[featureTrain TargetRefine('NE',target)];
 
-classifer.name='FLD';
-
-[auc featureAN]=prFeatureSelection(dataAN,classifer,'sequential');
-[auc featureDI]=prFeatureSelection(dataDI,classifer,'sequential');
-[auc featureFE]=prFeatureSelection(dataFE,classifer,'sequential');
-[auc featureHA]=prFeatureSelection(dataHA,classifer,'sequential');
-[auc featureNE]=prFeatureSelection(dataNE,classifer,'sequential');
-[auc featureSA]=prFeatureSelection(dataSA,classifer,'sequential');
-[auc featureSU]=prFeatureSelection(dataSU,classifer,'sequential');
+classifer.name='DLRT';
+classifer.K=5;
+% [auc featureAN]=prFeatureSelection(dataAN,classifer,'sequential');
+% [auc featureDI]=prFeatureSelection(dataDI,classifer,'sequential');
+% [auc featureFE]=prFeatureSelection(dataFE,classifer,'sequential');
+% [auc featureHA]=prFeatureSelection(dataHA,classifer,'sequential');
+% [auc featureNE]=prFeatureSelection(dataNE,classifer,'sequential');
+% [auc featureSA]=prFeatureSelection(dataSA,classifer,'sequential');
+% [auc featureSU]=prFeatureSelection(dataSU,classifer,'sequential');
 
 classiferAN=prTrainClassifer([dataAN(:,featureAN) dataAN(:,end)],classifer);
 classiferDI=prTrainClassifer([dataDI(:,featureDI) dataDI(:,end)],classifer);
@@ -61,7 +61,7 @@ dsTestNE=prRunClassifer(classiferNE,test(:,featureNE));
 [wSU,pSU]=prEmotion(dsTestSU,dsSU,dataSU(:,end));
 [wNE,pNE]=prEmotion(dsTestNE,dsNE,dataNE(:,end));
 
-ret=nan(size(wAN,2),7);
+ret=nan(length(wAN),7);
 for i=1:size(wAN,2)
     w=wAN(i)*pAN(i)+wDI(i)*pDI(i)+wFE(i)*pFE(i)+wHA(i)*pHA(i)+wSA(i)*pSA(i)+wSU(i)*pSU(i)+wNE(i)*pNE(i);
     ret(i,1)=wAN(i)*pAN(i)/w;

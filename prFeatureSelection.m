@@ -18,21 +18,23 @@ if(strcmpi('sequential',option))
          
             ret= prAUC(averPf,averPd);
             
-            if(auc<=ret)
+            if(auc<ret)
                 auc=ret;
                 index=j;
             end
+            
             chosedFeature(1)=[];
-        end
-        if(index==0)
-            x=0;
         end
         chosedFeature=sort([dim(index) chosedFeature]);
         result(i)=auc;
         dim(index)=[];
-        if(maxAuc<=auc)
+        if(maxAuc<auc)
             maxAuc=auc;
             featureDecision=chosedFeature;
+        end
+        
+        if(maxAuc==1)
+           break;
         end
     end
     figure,plot(result);
