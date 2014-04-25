@@ -3,7 +3,7 @@ close all;clear all;clc;
 load('data/TargetData');
 load('data/norm_location_train.mat');
 load('data/norm_angle_train.mat');
-% load('data/FLDFeature.mat');
+load('data/FLDFeature.mat');
 load('data/norm_location_test2.mat');
 warning('off','all');
 warning;
@@ -20,14 +20,14 @@ dataSU=[featureTrain TargetRefine('SU',target)];
 dataNE=[featureTrain TargetRefine('NE',target)];
 
 classifer.name='FLD';
-
-[auc featureAN]=prFeatureSelection(dataAN,classifer,'sequential');
-[auc featureDI]=prFeatureSelection(dataDI,classifer,'sequential');
-[auc featureFE]=prFeatureSelection(dataFE,classifer,'sequential');
-[auc featureHA]=prFeatureSelection(dataHA,classifer,'sequential');
-[auc featureNE]=prFeatureSelection(dataNE,classifer,'sequential');
-[auc featureSA]=prFeatureSelection(dataSA,classifer,'sequential');
-[auc featureSU]=prFeatureSelection(dataSU,classifer,'sequential');
+classifer.name='FLD';
+% [auc featureAN]=prFeatureSelection(dataAN,classifer,'sequential');
+% [auc featureDI]=prFeatureSelection(dataDI,classifer,'sequential');
+% [auc featureFE]=prFeatureSelection(dataFE,classifer,'sequential');
+% [auc featureHA]=prFeatureSelection(dataHA,classifer,'sequential');
+% [auc featureNE]=prFeatureSelection(dataNE,classifer,'sequential');
+% [auc featureSA]=prFeatureSelection(dataSA,classifer,'sequential');
+% [auc featureSU]=prFeatureSelection(dataSU,classifer,'sequential');
 
 classiferAN=prTrainClassifer([dataAN(:,featureAN) dataAN(:,end)],classifer);
 classiferDI=prTrainClassifer([dataDI(:,featureDI) dataDI(:,end)],classifer);
@@ -73,7 +73,7 @@ for i=1:size(wAN,2)
     ret(i,7)=wNE(i)*pNE(i)/w;
 end
 
-% ret(ret<0.01)=0;
+ret(ret<0.01)=0;
 fileinfo = dir('./data/test/*.jpg');
 Labels={'AN';'DI';'FE';'HA';'SA';'SU';'NE'};
 for j = 1:length(fileinfo),
