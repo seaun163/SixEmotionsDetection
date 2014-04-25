@@ -62,7 +62,7 @@ dsTestNE=prRunClassifer(classiferNE,test(:,featureNE));
 [wNE,pNE]=prEmotion(dsTestNE,dsNE,dataNE(:,end));
 
 ret=nan(length(wAN),7);
-for i=1:size(wAN,2)
+for i=1:length(wAN)
     w=wAN(i)*pAN(i)+wDI(i)*pDI(i)+wFE(i)*pFE(i)+wHA(i)*pHA(i)+wSA(i)*pSA(i)+wSU(i)*pSU(i)+wNE(i)*pNE(i);
     ret(i,1)=wAN(i)*pAN(i)/w;
     ret(i,2)=wDI(i)*pDI(i)/w;
