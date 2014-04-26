@@ -73,7 +73,7 @@ if(strcmpi('back',option))
         if(maxAuc<=auc)
             maxAuc=auc;
             featureDecision=chosedFeature;
-        end        
+        end     
     end
     figure,plot(result);
     title('Auc with different Dimention');

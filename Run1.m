@@ -21,13 +21,13 @@ dataNE=[featureTrain TargetRefine('NE',target)];
 
 classifer.name='FLD';
 % classifer.K=7;
-[auc featureAN]=prFeatureSelection(dataAN,classifer,'back');
-[auc featureDI]=prFeatureSelection(dataDI,classifer,'back');
-[auc featureFE]=prFeatureSelection(dataFE,classifer,'back');
-[auc featureHA]=prFeatureSelection(dataHA,classifer,'back');
-[auc featureNE]=prFeatureSelection(dataNE,classifer,'back');
-[auc featureSA]=prFeatureSelection(dataSA,classifer,'back');
-[auc featureSU]=prFeatureSelection(dataSU,classifer,'back');
+[auc, featureAN]=prFeatureSelection(dataAN,classifer,'back');
+[auc, featureDI]=prFeatureSelection(dataDI,classifer,'back');
+[auc, featureFE]=prFeatureSelection(dataFE,classifer,'back');
+[auc, featureHA]=prFeatureSelection(dataHA,classifer,'back');
+[auc, featureNE]=prFeatureSelection(dataNE,classifer,'back');
+[auc, featureSA]=prFeatureSelection(dataSA,classifer,'back');
+[auc, featureSU]=prFeatureSelection(dataSU,classifer,'back');
 
 classiferAN=prTrainClassifer([dataAN(:,featureAN) dataAN(:,end)],classifer);
 classiferDI=prTrainClassifer([dataDI(:,featureDI) dataDI(:,end)],classifer);
