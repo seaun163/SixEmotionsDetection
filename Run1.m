@@ -19,15 +19,15 @@ dataSA=[featureTrain TargetRefine('SA',target)];
 dataSU=[featureTrain TargetRefine('SU',target)];
 dataNE=[featureTrain TargetRefine('NE',target)];
 
-classifer.name='DLRT';
-classifer.K=7;
-[auc featureAN]=prFeatureSelection(dataAN,classifer,'sequential');
-[auc featureDI]=prFeatureSelection(dataDI,classifer,'sequential');
-[auc featureFE]=prFeatureSelection(dataFE,classifer,'sequential');
-[auc featureHA]=prFeatureSelection(dataHA,classifer,'sequential');
-[auc featureNE]=prFeatureSelection(dataNE,classifer,'sequential');
-[auc featureSA]=prFeatureSelection(dataSA,classifer,'sequential');
-[auc featureSU]=prFeatureSelection(dataSU,classifer,'sequential');
+classifer.name='FLD';
+% classifer.K=7;
+[auc featureAN]=prFeatureSelection(dataAN,classifer,'back');
+[auc featureDI]=prFeatureSelection(dataDI,classifer,'back');
+[auc featureFE]=prFeatureSelection(dataFE,classifer,'back');
+[auc featureHA]=prFeatureSelection(dataHA,classifer,'back');
+[auc featureNE]=prFeatureSelection(dataNE,classifer,'back');
+[auc featureSA]=prFeatureSelection(dataSA,classifer,'back');
+[auc featureSU]=prFeatureSelection(dataSU,classifer,'back');
 
 classiferAN=prTrainClassifer([dataAN(:,featureAN) dataAN(:,end)],classifer);
 classiferDI=prTrainClassifer([dataDI(:,featureDI) dataDI(:,end)],classifer);

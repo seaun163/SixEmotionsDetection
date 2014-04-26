@@ -1,11 +1,9 @@
  function [maxAuc,featureDecision] = prFeatureSelection(data,classifer,option)
  
-dim=1:1:(size(data,2)-1);
-
-chosedFeature=size(data,2);
-maxAuc=0;
-
 if(strcmpi('sequential',option))
+    dim=1:1:(size(data,2)-1);
+    chosedFeature=size(data,2);
+    maxAuc=0;
     len=size(data,2)-1;
     result=nan(len,1);
     for i=1:len
@@ -40,8 +38,49 @@ if(strcmpi('sequential',option))
     figure,plot(result);
     title('Auc with different Dimention');
     ylabel('Auc');xlabel('Dimention');
+    featureDecision=featureDecision(:,1:end-1);
 end
-featureDecision=featureDecision(:,1:end-1);
+
+if(strcmpi('back',option))
+    len=size(data,2)-1;
+    chosedFeature=1:1:size(data,2);
+
+    result=nan(len,1);
+    [averPf,averPd]=prKCrossValidation(data,10,classifer);
+    maxAuc=prAUC(averPf,averPd);
+    result(len)=maxAuc;
+    featureDecision=chosedFeature;
+        
+    for i=len-1:-1:1
+        auc=0;
+        index=0;
+        for j=1:length(chosedFeature)-1;
+            temp=chosedFeature;
+            chosedFeature(j)= [];
+            [averPf,averPd]=prKCrossValidation(data(:,chosedFeature),10,classifer);
+         
+            ret= prAUC(averPf,averPd);
+            
+            if(auc<ret)
+                auc=ret;
+                index=j;
+            end           
+            chosedFeature=temp;
+        end
+        
+        chosedFeature(index)=[];
+        result(i)=auc;
+        if(maxAuc<=auc)
+            maxAuc=auc;
+            featureDecision=chosedFeature;
+        end        
+    end
+    figure,plot(result);
+    title('Auc with different Dimention');
+    ylabel('Auc');xlabel('Dimention');
+    featureDecision=featureDecision(:,1:end-1);
+end
+
 
 end
 
